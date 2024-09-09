@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NBA to NFL Game Simulator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .team {
+            margin: 20px;
+            padding: 10px;
+            background-color: #fff;
+            border-radius: 8px;
+            display: inline-block;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label, select {
+            display: block;
+            margin: 5px 0;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #game-log {
+            margin: 20px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <h1>NBA Players in NFL Roles Simulator</h1>
+
+    <!-- Team 1 -->
+    <div class="team">
+        <h2>Team 1</h2>
+        <label for="team1-qb">QB:</label>
+        <select id="team1-qb"></select>
+
+        <label for="team1-wr1">WR1:</label>
+        <select id="team1-wr1"></select>
+
+        <label for="team1-wr2">WR2:</label>
+        <select id="team1-wr2"></select>
+
+        <label for="team1-te">TE:</label>
+        <select id="team1-te"></select>
+    </div>
+
+    <!-- Team 2 -->
+    <div class="team">
+        <h2>Team 2</h2>
+        <label for="team2-qb">QB:</label>
+        <select id="team2-qb"></select>
+
+        <label for="team2-wr1">WR1:</label>
+        <select id="team2-wr1"></select>
+
+        <label for="team2-wr2">WR2:</label>
+        <select id="team2-wr2"></select>
+
+        <label for="team2-te">TE:</label>
+        <select id="team2-te"></select>
+    </div>
+
+    <button onclick="startGame()">Start Game</button>
+
+    <div id="game-log"></div>
+
+    <script>
+        // NBA players list
+        const nbaPlayers = [
+           "Magic Johnson",
+    "Isaiah Thomas",
+    "Stephen Curry",
+    "Chris Paul",
+    "John Stockton",
+    "Oscar Robertson",
+    "Allen Iverson",
+    "Russell Westbrook",
+    "Steve Nash",
+    "Gary Payton",
+    "Walt Frazier",
+    "James Harden",
+    "Penny Hardaway",
+    "Rod Strickland",
+    "Damian Lillard",
+"Michael Jordan",
+    "Kobe Bryant",
+    "Dwyane Wade",
+    "Allen Iverson",
+    "George Gervin",
+    "Jerry West",
+    "Ray Allen",
+    "James Harden",
+    "Reggie Miller",
+    "Cliff Hagan",
+    "Manu Ginobili",
+    "Bernard King",
+    "Earl Monroe",
+    "David Thompson",
+    "Clyde Drexler",
+"Larry Bird",
+    "LeBron James",
+    "Julius Erving",
+    "Kevin Durant",
+    "Paul Pierce",
+    "Scottie Pippen",
+    "Elgin Baylor",
+    "James Worthy",
+    "Kawhi Leonard",
+    "Dominique Wilkins",
+    "Grant Hill",
+    "Chris Mullin",
+    "Rick Barry",
+    "Vince Carter",
+    "Andre Iguodala",
+"Tim Duncan",
+    "Karl Malone",
+    "Kevin Garnett",
+    "Dirk Nowitzki",
+    "Charles Barkley",
+    "Elvin Hayes",
+    "Chris Webber",
+    "Pau Gasol",
+    "Dennis Rodman",
+    "Zion Williamson",
+    "Anthony Davis",
+    "Bob Pettit",
+    "Julius Randle",
+    "Blake Griffin",
+    "Sidney Wicks",
+"Kareem Abdul-Jabbar",
+    "Wilt Chamberlain",
+    "Bill Russell",
+    "Shaquille O'Neal",
+    "Hakeem Olajuwon",
+    "Moses Malone",
+    "David Robinson",
+    "Patrick Ewing",
+    "George Mikan",
+    "Nate Thurmond",
+    "Elvin Hayes",
+    "Artis Gilmore",
+    "Alonzo Mourning",
+    "Ben Wallace",
+    "Dikembe Mutombo",
+"Wemby"
+        ];
+
+        // Populate player selections for both teams
+        function populatePlayerSelects() {
+            const team1Selects = ["team1-qb", "team1-wr1", "team1-wr2", "team1-te"];
+            const team2Selects = ["team2-qb", "team2-wr1", "team2-wr2", "team2-te"];
+
+            team1Selects.forEach(id => populateSelect(id));
+            team2Selects.forEach(id => populateSelect(id));
+        }
+
+        function populateSelect(id) {
+            const select = document.getElementById(id);
+            nbaPlayers.forEach(player => {
+                const option = document.createElement("option");
+                option.value = player;
+                option.textContent = player;
+                select.appendChild(option);
+            });
+        }
+
+        // Start the game simulation
+        function startGame() {
+            const team1 = {
+                qb: document.getElementById("team1-qb").value,
+                wr1: document.getElementById("team1-wr1").value,
+                wr2: document.getElementById("team1-wr2").value,
+                te: document.getElementById("team1-te").value,
+                score: 0
+            };
+
+            const team2 = {
+                qb: document.getElementById("team2-qb").value,
+                wr1: document.getElementById("team2-wr1").value,
+                wr2: document.getElementById("team2-wr2").value,
+                te: document.getElementById("team2-te").value,
+                score: 0
+            };
+
+            let gameLog = document.getElementById("game-log");
+            gameLog.innerHTML = '';
+
+            // Simulate 5 plays
+            for (let i = 0; i < 5; i++) {
+                let result = simulatePlay(team1, team2);
+                gameLog.innerHTML += `<p>${result}</p>`;
+            }
+
+            // Display final scores
+            gameLog.innerHTML += `<h3>Final Score:</h3>`;
+            gameLog.innerHTML += `<p>Team 1: ${team1.score}</p>`;
+            gameLog.innerHTML += `<p>Team 2: ${team2.score}</p>`;
+        }
+
+        // Simulate a single play
+        function simulatePlay(team1, team2) {
+            const randomPlay = Math.random();
+            let result;
+
+            if (randomPlay > 0.5) {
+                team1.score += 7;
+                result = `${team1.qb} throws a touchdown to ${team1.wr1}! Team 1 Score: ${team1.score}`;
+            } else {
+                team2.score += 7;
+                result = `${team2.qb} throws a touchdown to ${team2.wr2}! Team 2 Score: ${team2.score}`;
+            }
+
+            return result;
+        }
+
+        // Initialize player selections on page load
+        populatePlayerSelects();
+    </script>
+</body>
+</html>
